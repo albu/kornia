@@ -94,9 +94,10 @@ def convert_points_from_homogeneous(
     # set the results of division by zeror/near-zero to 1.0
     # follow the convention of opencv:
     # https://github.com/opencv/opencv/pull/14411/files
-    mask: torch.Tensor = torch.abs(z_vec) > eps
-    scale: torch.Tensor = torch.ones_like(z_vec).masked_scatter_(
-        mask, torch.tensor(1.0).to(points.device) / z_vec[mask])
+    scale: torch.Tensor = torch.where(
+        torch.abs(z_vec) > eps,
+        torch.tensor(1.).cuda() / z_vec,
+        torch.ones_like(z_vec))
 
     return scale * points[..., :-1]
 
@@ -264,7 +265,7 @@ def rotation_matrix_to_quaternion(
 
     def safe_zero_division(numerator: torch.Tensor,
                            denominator: torch.Tensor) -> torch.Tensor:
-        eps: float = torch.finfo(numerator.dtype).tiny  # type: ignore
+        eps: float = 1e-6
         return numerator / torch.clamp(denominator, min=eps)
 
     rotation_matrix_vec: torch.Tensor = rotation_matrix.view(
@@ -623,7 +624,7 @@ def normalize_pixel_coordinates(
         torch.tensor(width), torch.tensor(height)
     ]).to(pixel_coordinates.device).to(pixel_coordinates.dtype)
 
-    factor: torch.Tensor = torch.tensor(2.) / (hw - 1).clamp(eps)
+    factor: torch.Tensor = torch.tensor(2.).cuda() / (hw - 1).clamp(eps)
 
     return factor * pixel_coordinates - 1
 
