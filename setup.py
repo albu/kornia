@@ -57,7 +57,7 @@ long_description = '\n'.join(readme.split('\n')[7:])
 
 
 requirements = [
-    'torch>=1.0.0',
+    'torch>=0.4.0',
     'pillow>=6.2.0',
 ]
 
