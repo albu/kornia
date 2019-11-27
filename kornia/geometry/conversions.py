@@ -96,7 +96,7 @@ def convert_points_from_homogeneous(
     # https://github.com/opencv/opencv/pull/14411/files
     scale: torch.Tensor = torch.where(
         torch.abs(z_vec) > eps,
-        torch.tensor(1.) / z_vec,
+        torch.tensor(1.).cuda() / z_vec,
         torch.ones_like(z_vec))
 
     return scale * points[..., :-1]
@@ -624,7 +624,7 @@ def normalize_pixel_coordinates(
         torch.tensor(width), torch.tensor(height)
     ]).to(pixel_coordinates.device).to(pixel_coordinates.dtype)
 
-    factor: torch.Tensor = torch.tensor(2.) / (hw - 1).clamp(eps)
+    factor: torch.Tensor = torch.tensor(2.).cuda() / (hw - 1).clamp(eps)
 
     return factor * pixel_coordinates - 1
 
