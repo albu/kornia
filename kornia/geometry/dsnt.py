@@ -7,7 +7,6 @@ from typing import Any, Tuple
 
 import torch
 import torch.nn.functional as F
-from torch import finfo  # type: ignore
 
 from kornia.utils.grid import create_meshgrid
 
@@ -110,7 +109,7 @@ def _safe_zero_division(
         numerator: torch.Tensor,
         denominator: torch.Tensor,
 ) -> torch.Tensor:
-    eps: float = finfo(numerator.dtype).tiny
+    eps: float = 1e-6
     return numerator / torch.clamp(denominator, min=eps)
 
 

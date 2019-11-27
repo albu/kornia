@@ -265,7 +265,7 @@ def rotation_matrix_to_quaternion(
 
     def safe_zero_division(numerator: torch.Tensor,
                            denominator: torch.Tensor) -> torch.Tensor:
-        eps: float = torch.finfo(numerator.dtype).tiny  # type: ignore
+        eps: float = 1e-6
         return numerator / torch.clamp(denominator, min=eps)
 
     rotation_matrix_vec: torch.Tensor = rotation_matrix.view(
