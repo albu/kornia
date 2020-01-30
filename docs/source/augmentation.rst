@@ -1,12 +1,21 @@
 kornia.augmentation
-------------
+-------------------
 
 .. currentmodule:: kornia.augmentation
 
-The functions in this section perform various data augmentation operations
-
-.. autofunction:: random_hflip 
-.. autofunction:: color_jitter
+The classes in this section perform various data augmentation operations
 
 .. autoclass:: RandomHorizontalFlip
+.. autoclass:: RandomVerticalFlip
+.. autoclass:: RandomRectangleErasing
+.. autoclass:: RandomGrayscale
+.. autoclass:: RandomAffine
+.. autoclass:: RandomPerspective
+.. autoclass:: RandomRotation
 .. autoclass:: ColorJitter
+.. autoclass:: CenterCrop
+.. autoclass:: RandomCrop
+.. autoclass:: RandomResizedCrop
+
+.. automodule:: kornia.augmentation.functional
+    :members:

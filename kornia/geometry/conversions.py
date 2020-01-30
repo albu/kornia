@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
 __all__ = [
     # functional api
     "pi",
@@ -84,6 +83,7 @@ def convert_points_from_homogeneous(
     if not isinstance(points, torch.Tensor):
         raise TypeError("Input type is not a torch.Tensor. Got {}".format(
             type(points)))
+
     if len(points.shape) < 2:
         raise ValueError("Input must be at least a 2D tensor. Got {}".format(
             points.shape))
