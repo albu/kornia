@@ -94,10 +94,9 @@ def convert_points_from_homogeneous(
     # set the results of division by zeror/near-zero to 1.0
     # follow the convention of opencv:
     # https://github.com/opencv/opencv/pull/14411/files
-    scale: torch.Tensor = torch.where(
-        torch.abs(z_vec) > eps,
-        torch.tensor(1.).cuda() / z_vec,
-        torch.ones_like(z_vec))
+    mask: torch.Tensor = torch.abs(z_vec) > eps
+    scale: torch.Tensor = torch.ones_like(z_vec).masked_scatter_(
+        mask, torch.tensor(1.0).to(points.device) / z_vec[mask])
 
     return scale * points[..., :-1]
 
